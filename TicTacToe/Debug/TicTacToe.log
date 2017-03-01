@@ -1,7 +1,7 @@
 ﻿  TicTacToe.cpp
-d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(351): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
-d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(355): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
-d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(375): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
-d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(379): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
+d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(370): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
+d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(374): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
+d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(398): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
+d:\навчання\visual studio 2015\projects\tictactoe\tictactoe\tictactoe.cpp(402): warning C4244: =: преобразование "TCHAR" в "char", возможна потеря данных
   TicTacToe.vcxproj -> D:\навчання\Visual Studio 2015\Projects\TicTacToe\Debug\TicTacToe.exe
   TicTacToe.vcxproj -> D:\навчання\Visual Studio 2015\Projects\TicTacToe\Debug\TicTacToe.pdb (Full PDB)

@@ -8,6 +8,8 @@
 #include "stdafx.h"
 #include "TicTacToe.h"
 #include<time.h>
+#include<string>
+
 #define MAX_LOADSTRING 100
 using namespace std;
 
@@ -18,6 +20,7 @@ static TCHAR gameTCHAR[3][3];
 static TCHAR player;
 static TCHAR computer;
 static INT cntOfMove = 0;
+static INT roundOfGame = 0;
 static INT radioCheck = 1;
 static HWND but1, but2, but3, but4, but5, but6, but7, but8, but9;
 // Forward declarations of functions included in this code module:
@@ -26,7 +29,7 @@ BOOL                InitInstance(HINSTANCE, int);
 INT_PTR CALLBACK    Game(HWND, UINT, WPARAM, LPARAM);
 void				initGame(BOOL[][3], TCHAR[][3]);
 void				computerPlay(TCHAR, LPARAM);
-BOOL				cheking(int, int);
+BOOL				cheking(HWND, int, int);
 BOOL				play(int, int);
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -88,7 +91,6 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		::but9 = GetDlgItem(hDlg, IDC_BUTTON19);
 
 	//SendMessage(but1, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapO);
-		//SendMessage()
 	}return (INT_PTR)TRUE;
 
     case WM_COMMAND:
@@ -96,6 +98,7 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 		case IDC_BUTTON1: {
 			SetWindowText(GetDlgItem(hDlg, IDC_STATIC2), TEXT("Game is started..."));
+			computerPlay(computer, (LPARAM)bitMapO);
 			if (radioCheck == 1) {
 
 			}
@@ -119,7 +122,6 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 			case IDC_BUTTON11:{
 				if (play(0, 0)) {
-					//but1 = GetDlgItem(hDlg, IDC_BUTTON11);
 					SendMessage(but1, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[0][0] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -127,13 +129,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK| MB_ICONERROR);
 				}
-				if(cheking(0,0))
+				if (cheking(hDlg, 0, 0)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON12: {
 				if (play(0, 1)) {
-					//but2 = GetDlgItem(hDlg, IDC_BUTTON12);
 					SendMessage(but2, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[0][1] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -141,13 +143,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(0, 1))
+				if (cheking(hDlg, 0, 1)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON13: {
 				if (play(0, 2)) {
-					//but3 = GetDlgItem(hDlg, IDC_BUTTON13);
 					SendMessage(but3, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[0][2] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -155,13 +157,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(0, 2))
+				if (cheking(hDlg, 0, 2)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON14: {////
 				if (play(1, 0)) {
-					//but4 = GetDlgItem(hDlg, IDC_BUTTON14);
 					SendMessage(but4, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[1][0] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -169,13 +171,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(1, 0))
+				if (cheking(hDlg, 1, 0)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON15: {
 				if (play(1, 1)) {
-					//but5 = GetDlgItem(hDlg, IDC_BUTTON15);
 					SendMessage(but5, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[1][1] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -183,13 +185,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(1, 1))
+				if (cheking(hDlg, 1, 1)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON16: {
 				if (play(1, 2)) {
-					//but6 = GetDlgItem(hDlg, IDC_BUTTON16);
 					SendMessage(but6, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[1][2] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -197,13 +199,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(1, 2))
+				if (cheking(hDlg, 1, 2)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON17: {
 				if (play(2, 0)) {
-					//but7 = GetDlgItem(hDlg, IDC_BUTTON17);
 					SendMessage(but7, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[2][0] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -211,13 +213,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(2, 0))
+				if (cheking(hDlg, 2, 0)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON18: {
 				if (play(2, 1)) {
-					//but8 = GetDlgItem(hDlg, IDC_BUTTON18);
 					SendMessage(but8, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[2][1] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -225,13 +227,13 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(2, 1))
+				if (cheking(hDlg, 2, 1)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_BUTTON19: {
 				if (play(2, 2)) {
-					//but9 = GetDlgItem(hDlg, IDC_BUTTON19);
 					SendMessage(but9, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bitMapX);
 					gameTCHAR[2][2] = player;
 					computerPlay(computer, (LPARAM)bitMapO);
@@ -239,8 +241,9 @@ INT_PTR CALLBACK Game(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				else {
 					MessageBox(hDlg, TEXT("this place is already taken"), TEXT("Error"), MB_OK | MB_ICONERROR);
 				}
-				if (cheking(2, 2))
+				if (cheking(hDlg, 2, 2)) {
 					MessageBox(hDlg, TEXT("WIN"), TEXT("WIN"), MB_OK);
+				}
 			}return (INT_PTR)TRUE;
 
 			case IDC_RADIO1: {
@@ -318,7 +321,9 @@ void computerPlay(TCHAR comp, LPARAM bitMapO) {
 			}
 		}
 		else {
-			if (cntOfMove == 9)return;
+			if (cntOfMove == 9) {
+				return;
+			}
 			goto label;
 		}
 	}
@@ -338,7 +343,7 @@ BOOL play(int koord1, int koord2) {
 	}
 }
 
-BOOL cheking(int koord1, int koord2) {
+BOOL cheking(HWND hDlg, int koord1, int koord2) {
 	int count, count1;
 	char tmp;
 	for (int i = 0; i <= koord1; i++)//////////////////////////////////////gorisontal
@@ -357,11 +362,13 @@ BOOL cheking(int koord1, int koord2) {
 			}
 		}
 		if (count == 3) {
-			//cout << "X is winner" << endl;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("X win "));
+			::roundOfGame++;
 			return TRUE;
 		}
 		else if (count1 == 3) {
-			//cout << "O is winner" << endl;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("O win "));
+			::roundOfGame++;
 			return TRUE;
 		}
 	}
@@ -382,11 +389,13 @@ BOOL cheking(int koord1, int koord2) {
 			}
 		}
 		if (count == 3) {
-			//cout << "X is winner" << endl;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("X win "));
+			::roundOfGame++;
 			return TRUE;
 		}
 		else if (count1 == 3) {
-			//cout << "O is winner" << endl;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("O win "));
+			::roundOfGame++;
 			return TRUE;
 		}
 	}
@@ -405,11 +414,13 @@ BOOL cheking(int koord1, int koord2) {
 			}
 		}
 		if (count == 2) {
-			//cout << "X is winner" << endl;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("X win "));
+			::roundOfGame++;
 			return TRUE;
 		}
 		else if (count1 == 2) {
-			//cout << "O is winner" << endl;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("O win "));
+			::roundOfGame++;
 			return TRUE;
 		}
 	}
@@ -427,11 +438,13 @@ BOOL cheking(int koord1, int koord2) {
 			}
 		}
 		if (count == 2) {
-			//cout << "X is winner" << endl;
+			::roundOfGame++;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("X win "));
 			return TRUE;
 		}
 		else if (count1 == 2) {
-			//cout << "O is winner" << endl;
+			::roundOfGame++;
+			SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, (LPARAM)TEXT("O win "));
 			return TRUE;
 		}
 	}
